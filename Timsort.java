@@ -1,4 +1,6 @@
 
+import java.util.concurrent.TimeUnit;
+
 public class Timsort {
 
     private static final int RUN = 32;
@@ -79,19 +81,24 @@ public class Timsort {
     }
 
     public static void main(String[] args) {
-        int[] arr = {5, 21, 7, 23, 19};
+        int[] arr = new int[500000];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (int) (Math.random() * 1000000);
+        }
         int n = arr.length;
-        System.out.println("Array inicial:");
-        printArray(arr, n);
+        System.out.println("Iniciando a ordenação de " + n + " números...");
 
-        long startTime = System.nanoTime();
+        long tempoInicio = System.nanoTime();
         timSort(arr, n);
-        long endTime = System.nanoTime();
+        long tempoFim = System.nanoTime();
 
-        System.out.println("Array ordenado:");
-        printArray(arr, n);
+        long duracao = tempoFim - tempoInicio;
 
-        long duration = (endTime - startTime) / 1000000;
-        System.out.println("Tempo de execução: " + duration + " ms");
+        long horas = TimeUnit.NANOSECONDS.toHours(duracao);
+        long minutos = TimeUnit.NANOSECONDS.toMinutes(duracao) % 60;
+        long segundos = TimeUnit.NANOSECONDS.toSeconds(duracao) % 60;
+        long milissegundos = TimeUnit.NANOSECONDS.toMillis(duracao) % 1000;
+
+        System.out.printf("Ordenação concluída.\nTempo de execução: %02d:%02d:%02d:%03d\n", horas, minutos, segundos, milissegundos);
     }
 }

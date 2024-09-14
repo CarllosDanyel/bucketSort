@@ -1,64 +1,70 @@
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class BucketSort {
 
-    public static void bucketSort(int[] arr, int numBuckets) {
+    public static void bucketSort(int[] arr, int numBaldes) {
         if (arr == null || arr.length == 0) {
             return;
         }
 
-        int minValue = arr[0];
-        int maxValue = arr[0];
+        int valorMinimo = arr[0];
+        int valorMaximo = arr[0];
         for (int i = 1; i < arr.length; i++) {
-            if (arr[i] < minValue) {
-                minValue = arr[i];
-            } else if (arr[i] > maxValue) {
-                maxValue = arr[i];
+            if (arr[i] < valorMinimo) {
+                valorMinimo = arr[i];
+            } else if (arr[i] > valorMaximo) {
+                valorMaximo = arr[i];
             }
         }
 
-        int bucketSize = (maxValue - minValue) / numBuckets + 1;
-        ArrayList<ArrayList<Integer>> buckets = new ArrayList<>(numBuckets);
-        for (int i = 0; i < numBuckets; i++) {
-            buckets.add(new ArrayList<>());
+        int tamanhoBalde = (valorMaximo - valorMinimo) / numBaldes + 1;
+        ArrayList<ArrayList<Integer>> baldes = new ArrayList<>(numBaldes);
+        for (int i = 0; i < numBaldes; i++) {
+            baldes.add(new ArrayList<>());
         }
 
         for (int i = 0; i < arr.length; i++) {
-            int bucketIndex = (arr[i] - minValue) / bucketSize;
-            buckets.get(bucketIndex).add(arr[i]);
+            int indiceBalde = (arr[i] - valorMinimo) / tamanhoBalde;
+            baldes.get(indiceBalde).add(arr[i]);
         }
 
-        int currentIndex = 0;
-        for (int i = 0; i < numBuckets; i++) {
-            Collections.sort(buckets.get(i));
-            for (int j = 0; j < buckets.get(i).size(); j++) {
-                arr[currentIndex++] = buckets.get(i).get(j);
+        int indiceAtual = 0;
+        for (int i = 0; i < numBaldes; i++) {
+            Collections.sort(baldes.get(i));
+            for (int j = 0; j < baldes.get(i).size(); j++) {
+                arr[indiceAtual++] = baldes.get(i).get(j);
             }
         }
     }
 
     public static void main(String[] args) {
-        int[] arr = {29, 10, 14, 37, 13};
-        int numBuckets = 5;
+        int numElementos = 500000;
+        int[] arr = new int[numElementos];
+        Random rand = new Random();
 
-        System.out.println("Array antes da ordenação:");
-        for (int num : arr) {
-            System.out.print(num + " ");
+        for (int i = 0; i < numElementos; i++) {
+            arr[i] = rand.nextInt(1000000);
         }
 
-        long startTime = System.nanoTime();
-        bucketSort(arr, numBuckets);
-        long endTime = System.nanoTime();
+        int numBaldes = 1000;
 
-        System.out.println("\nArray depois da ordenação:");
-        for (int num : arr) {
-            System.out.print(num + " ");
-        }
+        System.out.println("Iniciando a ordenação de " + numElementos + " números...");
 
-        long duration = (endTime - startTime) / 1000000;
+        long tempoInicio = System.nanoTime();
+        bucketSort(arr, numBaldes);
+        long tempoFim = System.nanoTime();
 
-        System.out.println("\nTempo de execução: " + duration + " ms");
+        long duracao = tempoFim - tempoInicio;
+
+        long horas = TimeUnit.NANOSECONDS.toHours(duracao);
+        long minutos = TimeUnit.NANOSECONDS.toMinutes(duracao) % 60;
+        long segundos = TimeUnit.NANOSECONDS.toSeconds(duracao) % 60;
+        long milissegundos = TimeUnit.NANOSECONDS.toMillis(duracao) % 1000;
+
+        System.out.printf("Ordenação concluída.\nTempo de execução: %02d:%02d:%02d:%03d\n", horas, minutos, segundos, milissegundos);
     }
 }
