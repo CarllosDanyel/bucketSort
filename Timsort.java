@@ -1,4 +1,6 @@
+
 public class Timsort {
+
     private static final int RUN = 32;
 
     public static void timSort(int[] arr, int n) {
@@ -82,9 +84,14 @@ public class Timsort {
         System.out.println("Array inicial:");
         printArray(arr, n);
 
+        long startTime = System.nanoTime();
         timSort(arr, n);
+        long endTime = System.nanoTime();
 
         System.out.println("Array ordenado:");
         printArray(arr, n);
+
+        long duration = (endTime - startTime) / 1000000;
+        System.out.println("Tempo de execução: " + duration + " ms");
     }
 }

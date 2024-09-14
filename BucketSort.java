@@ -1,7 +1,9 @@
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class BucketSort {
+
     public static void bucketSort(int[] arr, int numBuckets) {
         if (arr == null || arr.length == 0) {
             return;
@@ -41,16 +43,22 @@ public class BucketSort {
         int[] arr = {29, 10, 14, 37, 13};
         int numBuckets = 5;
 
-        System.out.println("Array before sorting:");
+        System.out.println("Array antes da ordenação:");
         for (int num : arr) {
             System.out.print(num + " ");
         }
 
+        long startTime = System.nanoTime();
         bucketSort(arr, numBuckets);
+        long endTime = System.nanoTime();
 
-        System.out.println("\nArray after sorting:");
+        System.out.println("\nArray depois da ordenação:");
         for (int num : arr) {
             System.out.print(num + " ");
         }
+
+        long duration = (endTime - startTime) / 1000000;
+
+        System.out.println("\nTempo de execução: " + duration + " ms");
     }
 }
